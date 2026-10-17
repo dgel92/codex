@@ -1,0 +1,39 @@
+1
+00:00:00,185 --> 00:00:04,686
+EasyStock | Diseño del equipo FullStackers aplicado al MVP de Intendencia.
+
+2
+00:00:04,686 --> 00:00:09,143
+HU-01 | Acceso por usuario y rol. Datos ficticios de demostración.
+
+3
+00:00:09,143 --> 00:00:13,384
+Inventario centralizado: cantidad disponible, categoría y ubicación física.
+
+4
+00:00:13,384 --> 00:00:17,683
+HU-02 | Alta de insumo con código único y ubicación estructurada.
+
+5
+00:00:17,683 --> 00:00:22,357
+HU-03 | Configuración de mínimos y máximos, reservada al Administrador.
+
+6
+00:00:22,357 --> 00:00:26,686
+HU-06 | Recepción de 10 litros con referencia de remito y usuario responsable.
+
+7
+00:00:26,686 --> 00:00:30,962
+HU-04 | Búsqueda por nombre y filtros combinados de categoría y ubicación.
+
+8
+00:00:30,962 --> 00:00:35,049
+HU-05 | Salida de 12 litros rechazada: solo hay 10 disponibles.
+
+9
+00:00:35,049 --> 00:00:39,214
+HU-05 | Consumo válido: 2,5 litros para el sector Molino.
+
+10
+00:00:39,214 --> 00:00:44,840
+Resultado verificado: 10 litros recibidos - 2,5 retirados = 7,5 litros.

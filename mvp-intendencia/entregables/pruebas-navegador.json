@@ -1,0 +1,76 @@
+{
+  "ejecutado_en_utc": "2026-10-17T01:19:08.749639+00:00",
+  "tipo": "Recorrido funcional real en Chromium; base aislada y datos ficticios",
+  "aprobados": 13,
+  "fallidos": 0,
+  "casos": [
+    {
+      "caso": "Portada: estética y recursos gráficos de EasyStock",
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "HU-01: inicio de sesión Administrador",
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "HU-02: alta con stock cero y ubicación Puerta 3",
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "HU-03: edición de umbrales",
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "HU-01: Operario sin acciones de administración",
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "HU-06: entrada incrementa el stock a 10 litros",
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "HU-04: búsqueda y filtros combinados",
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "HU-05: bloqueo de salida superior al stock",
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "HU-05: consumo actualiza stock a 7,5 litros",
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Permisos: acceso directo de Operario a alta bloqueado (403)",
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Interfaz móvil: 390 px sin desborde global",
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Navegador sin errores JavaScript",
+      "resultado": "APROBADO"
+    },
+    {
+      "caso": "Persistencia SQL: dos movimientos con cantidad, usuario y fecha; saldo 7500 milésimas",
+      "resultado": "APROBADO"
+    }
+  ],
+  "movimientos": [
+    [
+      "entrada",
+      10000,
+      "",
+      "operario",
+      "2026-10-17T01:18:49+00:00"
+    ],
+    [
+      "salida",
+      2500,
+      "Molino",
+      "operario",
+      "2026-10-17T01:19:02+00:00"
+    ]
+  ]
+}

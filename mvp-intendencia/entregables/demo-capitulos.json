@@ -1,0 +1,42 @@
+[
+  [
+    0.18500189599990335,
+    "EasyStock | Diseño del equipo FullStackers aplicado al MVP de Intendencia."
+  ],
+  [
+    4.686368971999855,
+    "HU-01 | Acceso por usuario y rol. Datos ficticios de demostración."
+  ],
+  [
+    9.14286524299996,
+    "Inventario centralizado: cantidad disponible, categoría y ubicación física."
+  ],
+  [
+    13.38384943400024,
+    "HU-02 | Alta de insumo con código único y ubicación estructurada."
+  ],
+  [
+    17.683396971000093,
+    "HU-03 | Configuración de mínimos y máximos, reservada al Administrador."
+  ],
+  [
+    22.3572870160001,
+    "HU-06 | Recepción de 10 litros con referencia de remito y usuario responsable."
+  ],
+  [
+    26.68626915599998,
+    "HU-04 | Búsqueda por nombre y filtros combinados de categoría y ubicación."
+  ],
+  [
+    30.96219236800016,
+    "HU-05 | Salida de 12 litros rechazada: solo hay 10 disponibles."
+  ],
+  [
+    35.04904498399992,
+    "HU-05 | Consumo válido: 2,5 litros para el sector Molino."
+  ],
+  [
+    39.21423704400013,
+    "Resultado verificado: 10 litros recibidos - 2,5 retirados = 7,5 litros."
+  ]
+]

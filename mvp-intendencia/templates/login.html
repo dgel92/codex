@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block title %}Iniciar sesión{% endblock %}
+{% block content %}
+<div class="login-page">
+  <div class="login-card">
+    <a href="{{ url_for('landing') }}" class="back-link">← Volver al inicio</a>
+    <div class="login-header">
+      <img src="{{ url_for('static', filename='branding/logo-st.png') }}" alt="Logo EasyStock" class="login-logo">
+      <h1>EasyStock</h1><p>Gestor de inventario · Intendencia</p>
+    </div>
+    <div class="login-body"><h2>Iniciar sesión</h2><p class="subtitle">Ingresá tus datos para acceder al sistema</p>
+    <form method="post"><input type="hidden" name="csrf" value="{{ csrf }}">
+      <div class="form-group"><label for="username">Usuario</label><input class="form-control" id="username" name="username" required autocomplete="username" placeholder="Tu nombre de usuario" autofocus></div>
+      <div class="form-group"><label for="password">Contraseña</label><input class="form-control" id="password" name="password" type="password" required autocomplete="current-password" placeholder="Ingresá tu contraseña"></div>
+      <button class="btn-login" type="submit">Ingresar</button>
+    </form><p class="login-disclaimer">MVP académico · Cuentas y datos ficticios.<br>Acceso según rol: Administrador u Operario.</p></div>
+  </div>
+</div>
+{% endblock %}
