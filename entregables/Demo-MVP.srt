@@ -1,0 +1,35 @@
+1
+00:00:00,125 --> 00:00:04,500
+HU-01 | Acceso por usuario y rol. Datos ficticios de demostración.
+
+2
+00:00:04,500 --> 00:00:08,777
+Inventario centralizado: cantidad disponible, categoría y ubicación física.
+
+3
+00:00:08,777 --> 00:00:13,061
+HU-02 | Alta de insumo con código único y ubicación estructurada.
+
+4
+00:00:13,061 --> 00:00:17,679
+HU-03 | Configuración de mínimos y máximos, reservada al Administrador.
+
+5
+00:00:17,679 --> 00:00:22,028
+HU-06 | Recepción de 10 litros con referencia de remito y usuario responsable.
+
+6
+00:00:22,028 --> 00:00:26,335
+HU-04 | Búsqueda por nombre y filtros combinados de categoría y ubicación.
+
+7
+00:00:26,335 --> 00:00:30,433
+HU-05 | Salida de 12 litros rechazada: solo hay 10 disponibles.
+
+8
+00:00:30,433 --> 00:00:34,628
+HU-05 | Consumo válido: 2,5 litros para el sector Molino.
+
+9
+00:00:34,628 --> 00:00:40,560
+Resultado verificado: 10 litros recibidos - 2,5 retirados = 7,5 litros.

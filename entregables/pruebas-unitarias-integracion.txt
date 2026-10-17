@@ -1,0 +1,29 @@
+test_HU01_HU03_operario_restrictions_on_server (test_mvp.IntegrationTests.test_HU01_HU03_operario_restrictions_on_server) ... ok
+test_HU01_login_and_logout (test_mvp.IntegrationTests.test_HU01_login_and_logout) ... ok
+test_HU01_unauthenticated_requests_do_not_write (test_mvp.IntegrationTests.test_HU01_unauthenticated_requests_do_not_write) ... ok
+test_HU01_wrong_credentials_generic (test_mvp.IntegrationTests.test_HU01_wrong_credentials_generic) ... ok
+test_HU02_create_zero_stock (test_mvp.IntegrationTests.test_HU02_create_zero_stock) ... ok
+test_HU02_duplicate_name_and_code (test_mvp.IntegrationTests.test_HU02_duplicate_name_and_code) ... ok
+test_HU02_required_and_structured_fields (test_mvp.IntegrationTests.test_HU02_required_and_structured_fields) ... ok
+test_HU03_threshold_rules_and_audit (test_mvp.IntegrationTests.test_HU03_threshold_rules_and_audit) ... ok
+test_HU04_combined_filters (test_mvp.IntegrationTests.test_HU04_combined_filters) ... ok
+test_HU05_exit_and_traceability (test_mvp.IntegrationTests.test_HU05_exit_and_traceability) ... ok
+test_HU05_insufficient_stock_is_atomic (test_mvp.IntegrationTests.test_HU05_insufficient_stock_is_atomic) ... ok
+test_HU05_sector_required (test_mvp.IntegrationTests.test_HU05_sector_required) ... ok
+test_HU06_entry_and_optional_reference (test_mvp.IntegrationTests.test_HU06_entry_and_optional_reference) ... ok
+test_HU06_rejects_invalid_and_fractional_units (test_mvp.IntegrationTests.test_HU06_rejects_invalid_and_fractional_units) ... ok
+test_concurrent_exits_cannot_overdraw (test_mvp.IntegrationTests.test_concurrent_exits_cannot_overdraw) ... ok
+test_csrf_is_required (test_mvp.IntegrationTests.test_csrf_is_required) ... ok
+test_duplicate_submission_does_not_duplicate_stock (test_mvp.IntegrationTests.test_duplicate_submission_does_not_duplicate_stock) ... ok
+test_health_and_cookie_flags (test_mvp.IntegrationTests.test_health_and_cookie_flags) ... ok
+test_html_escaping (test_mvp.IntegrationTests.test_html_escaping) ... ok
+test_persistence_and_repeatable_seed (test_mvp.IntegrationTests.test_persistence_and_repeatable_seed) ... ok
+test_decimal_exactness_and_comma (test_mvp.QuantityTests.test_decimal_exactness_and_comma) ... ok
+test_invalid_quantities (test_mvp.QuantityTests.test_invalid_quantities) ... ok
+test_uniqueness_normalization (test_mvp.QuantityTests.test_uniqueness_normalization) ... ok
+test_units_cannot_be_fractional (test_mvp.QuantityTests.test_units_cannot_be_fractional) ... ok
+
+----------------------------------------------------------------------
+Ran 24 tests in 5.551s
+
+OK

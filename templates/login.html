@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Ingresar{% endblock %}
+{% block content %}
+<div class="login-layout">
+  <section class="login-story"><a class="brand" href="{{ url_for('login') }}"><span class="brand-mark">i.</span><span>intendencia<small>MOLINOS FLORENCIA</small></span></a>
+  <div class="story-body"><span class="eyebrow light">CONTROL INTERNO DEL PAÑOL</span><h1>Cada insumo,<br>en su lugar.</h1><p>Un registro simple para saber qué hay,<br>dónde está y quién lo utiliza.</p><div class="shelf-art" aria-hidden="true"><div class="shelf-row"><i></i><i></i><i></i></div><div class="shelf-row"><i></i><i></i></div><div class="shelf-row"><i></i><i></i><i></i><i></i></div></div></div>
+  <div class="login-foot">PRÁCTICA PROFESIONALIZANTE I <span>01 / MVP</span></div></section>
+  <section class="login-form"><div class="login-card"><span class="eyebrow">BIENVENIDO AL EQUIPO</span><h2>Ingresá al pañol</h2><p class="muted">Usá tus credenciales para acceder al inventario.</p>
+    <form method="post"><input type="hidden" name="csrf" value="{{ csrf }}"><label for="username">Usuario</label><input id="username" name="username" required autocomplete="username" placeholder="Tu nombre de usuario" autofocus>
+      <label for="password">Contraseña</label><input id="password" name="password" type="password" required autocomplete="current-password" placeholder="Tu contraseña">
+      <button class="button primary full" type="submit">Ingresar <span>→</span></button>
+    </form><div class="login-disclaimer">Acceso para personal autorizado.<br>Entorno académico con información ficticia.</div></div></section>
+</div>
+{% endblock %}

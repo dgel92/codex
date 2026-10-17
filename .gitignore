@@ -1,0 +1,7 @@
+.venv/
+__pycache__/
+*.pyc
+instance/
+.coverage
+entregables/raw/
+entregables/servidor-demo.log

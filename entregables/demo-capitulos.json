@@ -1,0 +1,38 @@
+[
+  [
+    0.12492888199994923,
+    "HU-01 | Acceso por usuario y rol. Datos ficticios de demostración."
+  ],
+  [
+    4.500006426000027,
+    "Inventario centralizado: cantidad disponible, categoría y ubicación física."
+  ],
+  [
+    8.77707030700003,
+    "HU-02 | Alta de insumo con código único y ubicación estructurada."
+  ],
+  [
+    13.061142750000045,
+    "HU-03 | Configuración de mínimos y máximos, reservada al Administrador."
+  ],
+  [
+    17.678537180000035,
+    "HU-06 | Recepción de 10 litros con referencia de remito y usuario responsable."
+  ],
+  [
+    22.028223734999983,
+    "HU-04 | Búsqueda por nombre y filtros combinados de categoría y ubicación."
+  ],
+  [
+    26.334914293999987,
+    "HU-05 | Salida de 12 litros rechazada: solo hay 10 disponibles."
+  ],
+  [
+    30.43308700199998,
+    "HU-05 | Consumo válido: 2,5 litros para el sector Molino."
+  ],
+  [
+    34.627642573,
+    "Resultado verificado: 10 litros recibidos - 2,5 retirados = 7,5 litros."
+  ]
+]

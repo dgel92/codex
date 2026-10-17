@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es-AR">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>{% block title %}Inventario{% endblock %} · Intendencia</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='app.css') }}">
+  <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</head>
+<body>
+{% if user %}
+<aside class="sidebar">
+  <a class="brand" href="{{ url_for('inventory') }}"><span class="brand-mark">i.</span><span>intendencia<small>MOLINOS FLORENCIA</small></span></a>
+  <div class="workspace-label">PAÑOL · CONTROL INTERNO</div>
+  <nav aria-label="Principal">
+    <a class="nav-link {{ 'active' if request.endpoint == 'inventory' }}" href="{{ url_for('inventory') }}"><span aria-hidden="true">▦</span> Inventario</a>
+    <a class="nav-link {{ 'active' if request.path.endswith('entrada') }}" href="{{ url_for('movement', kind='entrada') }}"><span aria-hidden="true">↓</span> Registrar entrada</a>
+    <a class="nav-link {{ 'active' if request.path.endswith('salida') }}" href="{{ url_for('movement', kind='salida') }}"><span aria-hidden="true">↑</span> Registrar salida</a>
+    {% if user.role == 'admin' %}<div class="nav-divider"></div><a class="nav-link {{ 'active' if request.endpoint == 'new_product' }}" href="{{ url_for('new_product') }}"><span aria-hidden="true">＋</span> Nuevo insumo</a>{% endif %}
+  </nav>
+  <div class="sidebar-note"><span class="dot"></span> Versión 1.0 <p>MVP académico<br>Datos de demostración ficticios</p></div>
+  <div class="user-box"><div class="avatar">{{ user.name[0] }}</div><div><strong>{{ user.name }}</strong><small>{{ 'Administrador' if user.role == 'admin' else 'Operario' }}</small></div></div>
+  <form method="post" action="{{ url_for('logout') }}"><input type="hidden" name="csrf" value="{{ csrf }}"><button class="logout">Cerrar sesión ↑</button></form>
+</aside>
+{% endif %}
+<main class="{{ 'main' if user else 'public-main' }}">
+{% if user %}<header class="topbar"><span>Espacio de trabajo <b>/</b> Intendencia</span><span class="version-pill">MVP · VERSIÓN 1</span></header>{% endif %}
+<div class="{{ 'content' if user else '' }}">
+  {% with messages = get_flashed_messages(with_categories=true) %}{% if messages %}<div class="messages" role="status" aria-live="polite">{% for category, message in messages %}<div class="message {{ category }}">{{ message }}</div>{% endfor %}</div>{% endif %}{% endwith %}
+  {% block content %}{% endblock %}
+</div></main>
+</body></html>
