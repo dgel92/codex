@@ -39,7 +39,7 @@ Estas credenciales son públicas y exclusivas del ejemplo académico. La carga `
 
 Administrador y Operario pueden registrar entradas y salidas; el Administrador hereda la operación del pañol. Los roles y ubicaciones propuestos requieren validación de la organización. La base admite litros/kg con hasta tres decimales y unidades enteras. La pantalla consulta el stock actual en cada petición; después de un movimiento propio muestra el nuevo saldo. Para cambios de otro dispositivo, usar **Actualizar** o repetir la búsqueda. No hay actualización push.
 
-No se implementaron las pantallas de alertas HU-07 ni el historial avanzado HU-08, reservados para la Versión 2 en la etapa 10. Los movimientos sí quedan persistidos como base de trazabilidad. No hay integración con Oracle JD Edwards, compras, pagos ni contabilidad.
+Se incorporó un aviso flotante de stock bajo como primera parte de HU-07. El historial avanzado HU-08 queda pendiente. Los movimientos sí quedan persistidos como base de trazabilidad. No hay integración con Oracle JD Edwards, compras, pagos ni contabilidad.
 
 ## Persistencia
 
@@ -74,3 +74,20 @@ Los entregables están en `entregables/`: presentación editable PowerPoint, pre
 `app.py`: servidor, persistencia y reglas de negocio. `templates/` y `static/`: interfaz. `tests/`: pruebas unitarias e integrales. `scripts/`: demo y generación de presentación. `docs/`: alcance, manual y guion.
 
 Esta nueva implementación y sus pruebas fueron realizadas durante esta sesión de desarrollo. No acreditan que las pruebas o la demo existieran en la instancia académica anterior ni constituyen aceptación por parte de la empresa.
+
+## Gestión de insumos y avisos de stock
+
+Al pulsar el nombre de un insumo se abre una ficha flotante con código, categoría, ubicación, stock, unidad, mínimos/máximos y fecha de última modificación. La fecha se muestra en la zona horaria del navegador; también se actualiza al registrar movimientos. Se cierra con el botón Cerrar o con Escape.
+
+El administrador puede entrar a **Editar** desde el inventario o la ficha y modificar categoría, ubicación física, mínimo y máximo. La eliminación es definitiva e incluye stock, movimientos e historial de umbrales del producto; requiere escribir su código exacto. El operario puede consultar fichas y registrar movimientos, pero no editar ni eliminar productos.
+
+Cuando un stock es estrictamente inferior al mínimo, el inventario muestra una notificación flotante con los insumos afectados, incluso si la búsqueda los oculta. Puede cerrarse y vuelve a evaluarse en cada consulta, incluidos los retornos después de movimientos y ediciones. El aviso es interno a la aplicación; no envía correo, notificaciones del sistema ni avisos con la página cerrada. Para ver movimientos realizados desde otro equipo, actualizar el inventario.
+
+Prueba de interfaz con Chromium instalado y las dependencias de desarrollo:
+
+```bash
+cd /workspace/codex
+/workspace/.venv-mvp/bin/python scripts/smoke_inventory.py
+```
+
+Este smoke utiliza una base temporal y verifica ficha, edición, aviso, vista móvil y eliminación sin modificar los datos de desarrollo. Los entregables en `entregables/` corresponden a la versión académica anterior a estas mejoras.

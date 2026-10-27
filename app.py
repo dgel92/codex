@@ -118,7 +118,7 @@ def record_movement(connection, product_id, kind, amount, user_id, *, sector="",
         value = quantity(amount, product["unit"])
         if kind == "salida" and value > product["stock"]:
             raise ValueError("Stock insuficiente. No se registró la salida.")
-        connection.execute("UPDATE products SET stock = stock + ? WHERE id = ?", (value if kind == "entrada" else -value, product_id))
+        connection.execute("UPDATE products SET stock = stock + ?, updated_at=?, updated_by=? WHERE id = ?", (value if kind == "entrada" else -value, now(), user_id, product_id))
         connection.execute(
             "INSERT INTO movements(product_id,kind,quantity,sector,reference,observation,user_id,created_at,request_id) VALUES(?,?,?,?,?,?,?,?,?)",
             (product_id, kind, value, sector if kind == "salida" else "", reference, observation, user_id, now(), request_id),
@@ -228,9 +228,10 @@ def create_app(config=None):
         location = request.args.get("location", "")
         products = db().execute("SELECT * FROM products ORDER BY name_key").fetchall()
         total = len(products)
+        low_stock = [p for p in products if p["stock"] < p["minimum"]]
         products = [p for p in products if (not q or normalized(q) in normalized(" ".join(str(p[k]) for k in ("name", "code", "category", "location"))))
                     and (not category or p["category"] == category) and (not location or p["location"] == location)]
-        return render_template("inventory.html", products=products, total=total, q=q, category=category, location=location)
+        return render_template("inventory.html", products=products, total=total, low_stock=low_stock, q=q, category=category, location=location)
 
     @app.route("/insumos/nuevo", methods=["GET", "POST"])
     @authenticated("admin")
@@ -258,6 +259,51 @@ def create_app(config=None):
                 flash(str(error), "error")
             return render_template("product.html"), 400
         return render_template("product.html")
+
+    @app.route("/insumos/<int:product_id>/editar", methods=["GET", "POST"])
+    @authenticated("admin")
+    def edit_product(product_id):
+        product = db().execute("SELECT * FROM products WHERE id=?", (product_id,)).fetchone()
+        if product is None:
+            abort(404)
+        if request.method == "POST":
+            try:
+                category = request.form.get("category", "")
+                location = request.form.get("location", "")
+                if category not in CATEGORIES or location not in LOCATIONS:
+                    raise ValueError("Seleccioná categoría y ubicación de las opciones disponibles.")
+                minimum = quantity(request.form.get("minimum", ""), product["unit"])
+                maximum = quantity(request.form.get("maximum", ""), product["unit"])
+                if minimum >= maximum:
+                    raise ValueError("El stock mínimo debe ser menor que el máximo.")
+                with db():
+                    db().execute("UPDATE products SET category=?, location=?, minimum=?, maximum=?, updated_at=?, updated_by=? WHERE id=?",
+                                 (category, location, minimum, maximum, now(), g.user["id"], product_id))
+                    db().execute("INSERT INTO threshold_changes(product_id,minimum,maximum,user_id,created_at) VALUES(?,?,?,?,?)",
+                                 (product_id, minimum, maximum, g.user["id"], now()))
+                flash("Insumo actualizado.", "success")
+                return redirect(url_for("inventory"))
+            except ValueError as error:
+                flash(str(error), "error")
+                return render_template("edit_product.html", product=product), 400
+        return render_template("edit_product.html", product=product)
+
+    @app.post("/insumos/<int:product_id>/eliminar")
+    @authenticated("admin")
+    def delete_product(product_id):
+        with db():
+            db().execute("BEGIN IMMEDIATE")
+            product = db().execute("SELECT * FROM products WHERE id=?", (product_id,)).fetchone()
+            if product is None:
+                abort(404)
+            if request.form.get("confirmation") != product["code"]:
+                flash("Para eliminar el insumo, escribí su código exacto.", "error")
+                return redirect(url_for("edit_product", product_id=product_id))
+            db().execute("DELETE FROM movements WHERE product_id=?", (product_id,))
+            db().execute("DELETE FROM threshold_changes WHERE product_id=?", (product_id,))
+            db().execute("DELETE FROM products WHERE id=?", (product_id,))
+        flash("Insumo y sus movimientos eliminados definitivamente.", "success")
+        return redirect(url_for("inventory"))
 
     @app.route("/insumos/<int:product_id>/umbrales", methods=["GET", "POST"])
     @authenticated("admin")

@@ -1,0 +1,17 @@
+{% extends 'base.html' %}{% block title %}Editar insumo{% endblock %}
+{% block content %}
+<a class="back-link" href="{{ url_for('inventory') }}">← Volver al inventario</a>
+<div class="page-heading"><div><h1>Editar insumo</h1><p class="muted">{{ product.name }} · {{ product.code }} · {{ product.unit }}</p></div></div>
+<form class="panel form-panel compact" method="post">
+<input type="hidden" name="csrf" value="{{ csrf }}">
+<div class="form-grid">
+<div><label for="category">Categoría</label><select id="category" name="category" required>{% for c in categories %}<option {{ 'selected' if request.form.get('category', product.category) == c }}>{{ c }}</option>{% endfor %}</select></div>
+<div><label for="location">Ubicación física</label><select id="location" name="location" required>{% for l in locations %}<option {{ 'selected' if request.form.get('location', product.location) == l }}>{{ l }}</option>{% endfor %}</select></div>
+<div><label for="minimum">Stock mínimo</label><input id="minimum" name="minimum" type="number" min="{{ '1' if product.unit == 'unidad' else '0.001' }}" step="{{ '1' if product.unit == 'unidad' else '0.001' }}" max="1000000" value="{{ request.form.get('minimum', product.minimum|qty) }}" required></div>
+<div><label for="maximum">Stock máximo</label><input id="maximum" name="maximum" type="number" min="{{ '1' if product.unit == 'unidad' else '0.001' }}" step="{{ '1' if product.unit == 'unidad' else '0.001' }}" max="1000000" value="{{ request.form.get('maximum', product.maximum|qty) }}" required></div>
+</div><p class="info-note">El mínimo debe ser positivo y menor que el máximo. Se registran la fecha y el administrador responsable.</p>
+<div class="form-actions"><a class="button secondary" href="{{ url_for('inventory') }}">Cancelar</a><button class="button primary">Guardar cambios</button></div>
+</form>
+<section class="panel form-panel compact delete-panel"><h2>Eliminar definitivamente</h2><p>Se borrarán este insumo, su stock, todos sus movimientos y su historial de umbrales. Esta acción no se puede deshacer.</p>
+<form method="post" action="{{ url_for('delete_product', product_id=product.id) }}"><input type="hidden" name="csrf" value="{{ csrf }}"><label for="confirmation">Escribí {{ product.code }} para confirmar</label><input id="confirmation" name="confirmation" autocomplete="off" required><div class="form-actions"><button class="button danger">Eliminar insumo y movimientos</button></div></form></section>
+{% endblock %}

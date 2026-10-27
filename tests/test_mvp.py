@@ -61,6 +61,73 @@ class IntegrationTests(unittest.TestCase):
         data.update(changes)
         return self.post(f'/movimientos/{kind}', data)
 
+    def test_product_details_and_edit(self):
+        self.login()
+        page = self.client.get('/').text
+        self.assertIn('id="product-1"', page)
+        self.assertIn('Última modificación', page)
+        before = self.row('SELECT updated_at FROM products WHERE id=1')[0]
+        response = self.post('/insumos/1/editar', dict(category='Otros', location='Estante 2', minimum='25', maximum='50'))
+        self.assertEqual(response.status_code, 200)
+        product = self.row('SELECT * FROM products WHERE id=1')
+        self.assertEqual((product['category'], product['location'], product['minimum'], product['maximum']), ('Otros', 'Estante 2', 25000, 50000))
+        self.assertEqual(product['updated_by'], 1)
+        self.assertGreaterEqual(product['updated_at'], before)
+        self.assertIn('Aviso: stock bajo', response.text)
+        self.assertEqual(self.row('SELECT COUNT(*) FROM threshold_changes WHERE product_id=1')[0], 1)
+
+    def test_invalid_edits_are_atomic(self):
+        self.login()
+        original = tuple(self.row('SELECT * FROM products WHERE id=1'))
+        for changes in (dict(category='inventada'), dict(location='inexistente'), dict(minimum='40'), dict(minimum='0')):
+            data = dict(category='Otros', location='Estante 2', minimum='5', maximum='40')
+            data.update(changes)
+            self.assertEqual(self.post('/insumos/1/editar', data).status_code, 400)
+            self.assertEqual(tuple(self.row('SELECT * FROM products WHERE id=1')), original)
+
+    def test_delete_complete_and_confirmed(self):
+        self.login()
+        self.post('/insumos/1/editar', dict(category='Otros', location='Estante 2', minimum='5', maximum='40'))
+        self.post('/insumos/1/eliminar', dict(confirmation='incorrecto'))
+        self.assertIsNotNone(self.row('SELECT * FROM products WHERE id=1'))
+        response = self.post('/insumos/1/eliminar', dict(confirmation='LIM-001'))
+        self.assertEqual(response.status_code, 200)
+        self.assertIsNone(self.row('SELECT * FROM products WHERE id=1'))
+        for table in ('movements', 'threshold_changes'):
+            self.assertEqual(self.row(f'SELECT COUNT(*) FROM {table} WHERE product_id=1')[0], 0)
+        self.assertEqual(self.row('SELECT COUNT(*) FROM products')[0], 3)
+        self.assertEqual(self.post('/insumos/1/eliminar', dict(confirmation='LIM-001')).status_code, 404)
+
+    def test_management_permissions_and_csrf(self):
+        self.login('operario')
+        self.assertEqual(self.client.get('/insumos/1/editar').status_code, 403)
+        self.assertEqual(self.post('/insumos/1/editar', {}).status_code, 403)
+        self.assertEqual(self.post('/insumos/1/eliminar', dict(confirmation='LIM-001')).status_code, 403)
+        self.login()
+        self.assertEqual(self.client.post('/insumos/1/eliminar', data=dict(confirmation='LIM-001')).status_code, 400)
+        self.assertIsNotNone(self.row('SELECT * FROM products WHERE id=1'))
+        self.assertEqual(self.client.get('/insumos/999/editar').status_code, 404)
+
+    def test_low_stock_alert_strict_boundary_and_filters(self):
+        self.login()
+        self.assertNotIn('Aviso: stock bajo', self.client.get('/').text)
+        self.move('salida', amount='19')
+        self.assertNotIn('Aviso: stock bajo', self.client.get('/').text)
+        response = self.move('salida', amount='1')
+        self.assertIn('Aviso: stock bajo', response.text)
+        self.assertIn('Aviso: stock bajo', self.client.get('/?q=inexistente').text)
+        self.move('entrada', amount='1')
+        self.assertNotIn('Aviso: stock bajo', self.client.get('/').text)
+
+    def test_movement_updates_last_modification(self):
+        self.login('operario')
+        with connect(self.path) as c:
+            c.execute("UPDATE products SET updated_at='2000-01-01T00:00:00+00:00' WHERE id=1")
+        self.move('entrada', amount='1')
+        row = self.row('SELECT updated_at, updated_by FROM products WHERE id=1')
+        self.assertNotEqual(row['updated_at'], '2000-01-01T00:00:00+00:00')
+        self.assertEqual(row['updated_by'], 2)
+
     def test_HU01_login_and_logout(self):
         response = self.login()
         self.assertEqual(response.status_code, 200)
